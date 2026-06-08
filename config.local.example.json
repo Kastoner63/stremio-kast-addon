@@ -1,0 +1,11 @@
+{
+  "remoteConfigUrl": "https://paste.lesalkodiques.com/raw/TON_CONFIG_JSON",
+  "pasteMasterIndexUrl": "",
+  "alldebridApiKey": "",
+  "tmdbAccessToken": "",
+  "tmdbApiKey": "",
+  "tmdbLanguage": "fr-FR",
+  "alldebridAgent": "KastStremioAddon",
+  "customResolverBaseUrl": "http://127.0.0.1:8787",
+  "resolverToken": ""
+}

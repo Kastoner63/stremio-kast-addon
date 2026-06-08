@@ -1,0 +1,23 @@
+{
+  "name": "kast-private-stremio-addon",
+  "version": "1.13.0",
+  "description": "Addon Stremio public configurable avec master index Paste, TMDB et resolver AllDebrid intégré.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "check": "node src/check-parser.js",
+    "check:tmdb": "node src/check-tmdb.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "stremio-addon-sdk": "^1.6.10"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

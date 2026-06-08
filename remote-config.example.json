@@ -1,0 +1,21 @@
+{
+  "pasteMasterIndexUrl": "https://paste.lesalkodiques.com/raw/TON_INDEX_MASTER",
+  "enabledCatalogs": {
+    "movies": true,
+    "series": true,
+    "cartoonsMovies": true,
+    "cartoonsSeries": true,
+    "documentaries": true,
+    "spectacles": true,
+    "concerts": true
+  },
+  "catalogNames": {
+    "movies": "Kast Movies",
+    "series": "Kast Series",
+    "cartoonsMovies": "Kast Cartoons",
+    "cartoonsSeries": "Kast Cartoon Series",
+    "documentaries": "Kast Documentaires",
+    "spectacles": "Kast Spectacles",
+    "concerts": "Kast Concerts"
+  }
+}
