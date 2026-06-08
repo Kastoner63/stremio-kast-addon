@@ -10,21 +10,21 @@ L’addon n’héberge aucun média. Il affiche des catalogues dans Stremio et u
 
 L’addon utilise :
 
-- un index distant commun pour les catalogues ;
-- une clé API AllDebrid personnelle par utilisateur ;
-- une clé TMDB personnelle pour les affiches et métadonnées ;
-- une URL Stremio personnelle chiffrée pour chaque utilisateur.
+* un index distant commun pour les catalogues ;
+* une clé API AllDebrid personnelle par utilisateur ;
+* une clé TMDB personnelle pour les affiches et métadonnées ;
+* une URL Stremio personnelle chiffrée pour chaque utilisateur.
 
 Chaque utilisateur génère sa propre URL d’installation depuis la page de configuration.
 
 ---
 
-## Utilisation avec l’addon hébergé
+## Utilisation de l’addon hébergé
 
 Ouvre la page de configuration de l’addon :
 
 ```txt
-https://stremio-kast-addon.onrender.com/configure
+https://kast-addon-pi.tail47625d.ts.net/configure
 ```
 
 Renseigne :
@@ -43,7 +43,7 @@ Générer mon URL Stremio
 L’addon va générer une URL personnelle du type :
 
 ```txt
-https://stremio-kast-addon.onrender.com/u/cfg_xxxxx/manifest.json
+https://kast-addon-pi.tail47625d.ts.net/u/cfg_xxxxx/manifest.json
 ```
 
 Dans Stremio :
@@ -51,6 +51,8 @@ Dans Stremio :
 ```txt
 Addons → Add addon → colle l’URL générée → Install
 ```
+
+Au premier lancement, les catalogues peuvent prendre quelques secondes à apparaître. C’est normal, le temps que l’addon charge l’index distant et prépare les catalogues.
 
 ---
 
@@ -99,6 +101,12 @@ L’addon utilise cette clé uniquement pour résoudre les liens au moment de la
 
 Ne mets jamais de clé AllDebrid globale dans une instance publique partagée.
 
+Lien utile :
+
+```txt
+https://alldebrid.com/apikeys/
+```
+
 ---
 
 ## Clé TMDB
@@ -127,6 +135,40 @@ TMDB API Key v3
 ```
 
 Le token v4 est recommandé.
+
+Lien utile :
+
+```txt
+https://www.themoviedb.org/settings/api
+```
+
+---
+
+## Hébergement actuel
+
+L’addon est actuellement hébergé sur un Raspberry Pi personnel avec Tailscale Funnel.
+
+Architecture :
+
+```txt
+Utilisateur Stremio
+↓
+URL HTTPS Tailscale Funnel
+↓
+Raspberry Pi
+↓
+Addon Node.js en local sur 127.0.0.1:7000
+```
+
+Cette configuration permet :
+
+```txt
+aucun port ouvert sur la box Internet
+pas d’exposition directe de l’IP publique
+HTTPS via Tailscale Funnel
+addon lancé en local sur le Raspberry
+processus maintenu avec PM2
+```
 
 ---
 
@@ -159,7 +201,7 @@ Si `.env.example` n’est pas présent, crée manuellement un fichier `.env` à 
 ```env
 NODE_ENV=production
 PUBLIC_MODE=true
-HOST=0.0.0.0
+HOST=127.0.0.1
 PORT=7000
 
 CONFIG_ENCRYPTION_SECRET=un_secret_long_et_aleatoire
@@ -181,9 +223,11 @@ RATE_LIMIT_WINDOW_SECONDS=60
 RATE_LIMIT_MAX=180
 CACHE_TTL_SECONDS=600
 EXPOSE_UNRESOLVED_STREAMS=false
+
+ADMIN_TOKEN=un_token_admin_long
 ```
 
-Pour générer `CONFIG_ENCRYPTION_SECRET` :
+Pour générer `CONFIG_ENCRYPTION_SECRET` ou `ADMIN_TOKEN` :
 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
@@ -191,7 +235,83 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 ---
 
-## Déploiement Render
+## Lancer l’addon avec PM2 sur Raspberry Pi
+
+Installer PM2 :
+
+```bash
+sudo npm install -g pm2
+```
+
+Lancer l’addon :
+
+```bash
+cd ~/stremio-kast-addon
+pm2 start src/server.js --name kast-alldebrid
+pm2 save
+```
+
+Voir l’état :
+
+```bash
+pm2 status
+```
+
+Voir les logs :
+
+```bash
+pm2 logs kast-alldebrid
+```
+
+Redémarrer après modification :
+
+```bash
+pm2 restart kast-alldebrid --update-env
+pm2 save
+```
+
+---
+
+## Sécurité
+
+Le dépôt ne doit jamais contenir :
+
+```txt
+.env
+config.local.json
+node_modules/
+logs/
+*.log
+```
+
+Ces fichiers doivent rester locaux et être ignorés par Git.
+
+Configuration recommandée pour un hébergement sécurisé :
+
+```env
+HOST=127.0.0.1
+PUBLIC_MODE=true
+DEBUG_HEALTH=false
+LOG_SENSITIVE_URLS=false
+EXPOSE_UNRESOLVED_STREAMS=false
+ADMIN_TOKEN=un_token_admin_long
+```
+
+À ne pas faire :
+
+```txt
+ouvrir le port 7000 sur la box
+mettre HOST=0.0.0.0 sur un serveur maison exposé directement
+publier une clé API AllDebrid globale
+partager une URL /u/cfg_xxxxx personnelle
+publier le fichier .env
+```
+
+---
+
+## Déploiement Render optionnel
+
+L’addon peut aussi être déployé sur Render.
 
 Paramètres recommandés :
 
@@ -220,22 +340,6 @@ LOG_SENSITIVE_URLS=false
 Ne mets pas de clé AllDebrid personnelle dans Render pour une instance publique.
 
 Chaque utilisateur doit renseigner sa propre clé via `/configure`.
-
----
-
-## Sécurité
-
-Le dépôt ne doit jamais contenir :
-
-```txt
-.env
-config.local.json
-node_modules/
-logs/
-*.log
-```
-
-Ces fichiers doivent rester locaux et être ignorés par Git.
 
 ---
 
