@@ -52,6 +52,11 @@ const baseManifest = {
     configurationRequired: false,
   },
 
+  stremioAddonsConfig: {
+    "issuer": "https://stremio-addons.net",
+    "signature": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..rUDDv0ACFheA7hx7PxWoPA.7v36izpQ-L2Q4pCoYIBJSrHk7O2aiX3qAOwe31jKcF3u4X3PPnJM89XTbQYYy7Mles4sszvqH_CV2O3zp00LRWhKxfLIbDIS8zmN1k-RtnKWzvlWurUaBRL54ToRD282.eU3o-L0NP64KeMjVOmo-7A"
+  },
+
   // Stremio peut lire ces champs, mais la vraie page de configuration personnalisée
   // est servie par /configure.
   config: [
