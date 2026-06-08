@@ -257,6 +257,13 @@ function configurePageHandler(req, res, options = {}) {
     button.primary, a.primary { background: #7c3aed; color: #fff; }
     a.secondary, button.secondary { background: #2b3140; color: #fff; }
     code { color: #d8b4fe; word-break: break-all; }
+    a {
+  color: #c4b5fd;
+}
+
+a:hover {
+  color: #ddd6fe;
+}
     .warning { border-color: #b45309; color: #fde68a; }
     .success { border-color: #16a34a; }
     .error { border-color: #dc2626; color: #fecaca; }
@@ -284,14 +291,30 @@ function configurePageHandler(req, res, options = {}) {
 
   <form method="post" action="/configure/generate">
     <label for="alldebridApiKey">Clé API AllDebrid</label>
-    <input id="alldebridApiKey" name="alldebridApiKey" type="password" autocomplete="off" required placeholder="Obligatoire pour lire les médias" />
-    <div class="hint">Chaque utilisateur doit utiliser sa propre clé API AllDebrid.</div>
+<input id="alldebridApiKey" name="alldebridApiKey" type="password" autocomplete="off" required placeholder="Obligatoire pour lire les médias" />
+<div class="hint">
+  Chaque utilisateur doit utiliser sa propre clé API AllDebrid.
+  <br />
+  <a href="https://alldebrid.com/apikeys/" target="_blank" rel="noopener noreferrer">
+    Récupérer ma clé API AllDebrid
+  </a>
+</div>
 
     <label for="tmdbAccessToken">TMDB Access Token v4</label>
-    <input id="tmdbAccessToken" name="tmdbAccessToken" type="password" autocomplete="off" placeholder="Recommandé pour les posters" />
+<input id="tmdbAccessToken" name="tmdbAccessToken" type="password" autocomplete="off" placeholder="Recommandé pour les posters" />
+<div class="hint">
+  Recommandé pour les posters et métadonnées.
+  <br />
+  <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noopener noreferrer">
+    Récupérer mon token / ma clé API TMDB
+  </a>
+</div>
 
-    <label for="tmdbApiKey">TMDB API Key v3</label>
-    <input id="tmdbApiKey" name="tmdbApiKey" type="password" autocomplete="off" placeholder="Alternative si tu n'utilises pas le token v4" />
+<label for="tmdbApiKey">TMDB API Key v3</label>
+<input id="tmdbApiKey" name="tmdbApiKey" type="password" autocomplete="off" placeholder="Alternative si tu n'utilises pas le token v4" />
+<div class="hint">
+  À utiliser uniquement si tu n’utilises pas le token v4.
+</div>
 
     <div class="row">
       <div>
