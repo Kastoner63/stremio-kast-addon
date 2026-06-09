@@ -13,7 +13,7 @@ function catalog(type, id, name) {
 const baseManifest = {
   id: 'com.kasttech.private.paste.library.public.v1',
   name: 'Kast Alldebrid',
-  version: '1.0.2',
+  version: '1.0.3',
   description: 'Addon Stremio configurable basé sur un master index Paste, TMDB et un resolver AllDebrid intégré.',
   logo: '/assets/logo-v2.png',
   background: '/assets/logo-v2.png',
@@ -37,24 +37,23 @@ const baseManifest = {
       types: ['movie', 'series'],
       idPrefixes: ['kast:'],
     },
+    // Pas d'idPrefixes sur stream : Stremio peut ainsi appeler l'addon
+    // depuis les fiches générales Cinemeta/Populaire avec des IDs IMDb
+    // comme tt1234567 ou tt1234567:1:2.
     {
       name: 'stream',
       types: ['movie', 'series'],
-      idPrefixes: ['kast:'],
     },
   ],
 
-  idPrefixes: ['kast:'],
+  // Les catalogues Kast gardent leurs IDs internes kast:..., mais la ressource
+  // stream accepte aussi les IDs publics Stremio/Cinemeta.
+  idPrefixes: ['kast:', 'tt'],
 
   // Stremio affiche le bouton engrenage/configuration quand configurable=true.
   behaviorHints: {
     configurable: true,
     configurationRequired: false,
-  },
-
-  stremioAddonsConfig: {
-    "issuer": "https://stremio-addons.net",
-    "signature": "eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..rUDDv0ACFheA7hx7PxWoPA.7v36izpQ-L2Q4pCoYIBJSrHk7O2aiX3qAOwe31jKcF3u4X3PPnJM89XTbQYYy7Mles4sszvqH_CV2O3zp00LRWhKxfLIbDIS8zmN1k-RtnKWzvlWurUaBRL54ToRD282.eU3o-L0NP64KeMjVOmo-7A"
   },
 
   // Stremio peut lire ces champs, mais la vraie page de configuration personnalisée

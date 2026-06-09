@@ -93,6 +93,38 @@ async function tmdbFetch(pathname, query = {}, userConfig = {}) {
   return json;
 }
 
+
+async function findTmdbByImdbId(imdbId, mediaType, userConfig = {}) {
+  const cleanImdbId = String(imdbId || '').trim();
+  if (!/^tt\d+$/i.test(cleanImdbId)) return null;
+
+  const result = await tmdbFetch(
+    `/find/${encodeURIComponent(cleanImdbId)}`,
+    { external_source: 'imdb_id' },
+    userConfig
+  );
+
+  if (!result) return null;
+
+  if (mediaType === 'movie') {
+    const movie = Array.isArray(result.movie_results) ? result.movie_results[0] : null;
+    return movie && movie.id ? String(movie.id) : null;
+  }
+
+  if (mediaType === 'series') {
+    const series = Array.isArray(result.tv_results) ? result.tv_results[0] : null;
+    return series && series.id ? String(series.id) : null;
+  }
+
+  const movie = Array.isArray(result.movie_results) ? result.movie_results[0] : null;
+  if (movie && movie.id) return String(movie.id);
+
+  const series = Array.isArray(result.tv_results) ? result.tv_results[0] : null;
+  if (series && series.id) return String(series.id);
+
+  return null;
+}
+
 async function getMovieDetails(tmdbId, userConfig = {}) {
   if (!tmdbId) return null;
   return tmdbFetch(`/movie/${encodeURIComponent(tmdbId)}`, {}, userConfig);
@@ -163,6 +195,7 @@ async function enrichSeries(itemOrTmdbId, userConfig = {}) {
 
 module.exports = {
   isTmdbEnabled,
+  findTmdbByImdbId,
   getMovieDetails,
   getSeriesDetails,
   enrichMovie,

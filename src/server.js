@@ -474,8 +474,8 @@ function formatStremioStream(stream, index) {
   const audio = extractAudio(searchText);
   const lang = extractLang(searchText);
 
-  const name = ['⚡ instant', 'AllDebrid', `(${quality})`].join('\n');
- const cacheLine = stream.size ? `🔍 Kast Cache 🇫🇷 ${stream.size}` : '🔍 Kast Cache';
+  const name = ['Kast Alldebrid', '⚡ Instant', quality].filter(Boolean).join('\n');
+  const cacheLine = stream.size ? `🔍 Kast Cache 🇫🇷 ${stream.size}` : '🔍 Kast Cache';
   const technicalLine = [
     codec ? `🤖 ${codec}` : null,
     source ? `🖥️ ${source}` : null,
