@@ -144,34 +144,6 @@ https://www.themoviedb.org/settings/api
 
 ---
 
-## Hébergement actuel
-
-L’addon est actuellement hébergé sur un Raspberry Pi personnel avec Tailscale Funnel.
-
-Architecture :
-
-```txt
-Utilisateur Stremio
-↓
-URL HTTPS Tailscale Funnel
-↓
-Raspberry Pi
-↓
-Addon Node.js en local sur 127.0.0.1:7000
-```
-
-Cette configuration permet :
-
-```txt
-aucun port ouvert sur la box Internet
-pas d’exposition directe de l’IP publique
-HTTPS via Tailscale Funnel
-addon lancé en local sur le Raspberry
-processus maintenu avec PM2
-```
-
----
-
 ## Auto-hébergement
 
 Cette section concerne uniquement les utilisateurs avancés qui veulent héberger leur propre instance.
