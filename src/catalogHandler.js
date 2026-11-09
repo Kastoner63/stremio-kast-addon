@@ -20,6 +20,14 @@ function applySearch(items, search) {
   return items.filter((item) => item.title.toLowerCase().includes(query));
 }
 
+function applyGenre(items, genre) {
+  const selected = String(genre || '').trim().toLocaleLowerCase('fr');
+  if (!selected) return items;
+  return items.filter((item) =>
+    genreNames(item.genres).some((name) => name.toLocaleLowerCase('fr') === selected)
+  );
+}
+
 function applyPagination(items, skip) {
   const offset = Number.parseInt(skip, 10) || 0;
   return items.slice(offset, offset + PAGE_SIZE);
@@ -119,14 +127,14 @@ async function mapWithLimitedConcurrency(items, mapper, limit = 8) {
   return results;
 }
 
-async function movieCatalog(items, search, skip, userConfig = {}) {
-  const page = applyPagination(applySearch(items, search), skip);
+async function movieCatalog(items, search, skip, userConfig = {}, genre = '') {
+  const page = applyPagination(applyGenre(applySearch(items, search), genre), skip);
   return { metas: await mapWithLimitedConcurrency(page, (item) => toMoviePreview(item, userConfig)) };
 }
 
-async function seriesCatalog(items, search, skip, kind, userConfig = {}) {
+async function seriesCatalog(items, search, skip, kind, userConfig = {}, genre = '') {
   const grouped = groupSeriesByTmdb(items, kind);
-  const page = applyPagination(applySearch(grouped, search), skip);
+  const page = applyPagination(applyGenre(applySearch(grouped, search), genre), skip);
   return { metas: await mapWithLimitedConcurrency(page, (item) => toSeriesPreview(item, userConfig)) };
 }
 
@@ -134,37 +142,38 @@ async function catalogHandler(args, userConfig = {}) {
   const library = await loadPasteLibrary();
   const search = args.extra && args.extra.search;
   const skip = args.extra && args.extra.skip;
+  const genre = args.extra && args.extra.genre;
 
   if (args.type === 'movie' && args.id === 'kast-movies') {
-    return movieCatalog(library.movies, search, skip, userConfig);
+    return movieCatalog(library.movies, search, skip, userConfig, genre);
   }
 
   if (args.type === 'movie' && args.id === 'kast-cartoons') {
-    return movieCatalog(library.cartoons, search, skip, userConfig);
+    return movieCatalog(library.cartoons, search, skip, userConfig, genre);
   }
 
   if (args.type === 'movie' && args.id === 'kast-documentaries') {
-    return movieCatalog(library.documentaries, search, skip, userConfig);
+    return movieCatalog(library.documentaries, search, skip, userConfig, genre);
   }
 
   if (args.type === 'movie' && args.id === 'kast-spectacles') {
-    return movieCatalog(library.spectacles, search, skip, userConfig);
+    return movieCatalog(library.spectacles, search, skip, userConfig, genre);
   }
 
   if (args.type === 'movie' && args.id === 'kast-concerts') {
-    return movieCatalog(library.concerts, search, skip, userConfig);
+    return movieCatalog(library.concerts, search, skip, userConfig, genre);
   }
 
   if (args.type === 'series' && args.id === 'kast-series') {
-    return seriesCatalog(library.series, search, skip, 'series', userConfig);
+    return seriesCatalog(library.series, search, skip, 'series', userConfig, genre);
   }
 
   if (args.type === 'series' && args.id === 'kast-cartoon-series') {
-    return seriesCatalog(library.cartoonSeries, search, skip, 'cartoonSeries', userConfig);
+    return seriesCatalog(library.cartoonSeries, search, skip, 'cartoonSeries', userConfig, genre);
   }
 
   if (args.type === 'series' && args.id === 'kast-documentary-series') {
-    return seriesCatalog(library.documentarySeries, search, skip, 'documentarySeries', userConfig);
+    return seriesCatalog(library.documentarySeries, search, skip, 'documentarySeries', userConfig, genre);
   }
 
   return { metas: [] };
