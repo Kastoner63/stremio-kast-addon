@@ -91,6 +91,43 @@ Kast Concerts
 
 Les catalogues sont basés sur un index commun géré à distance.
 
+### Catalogues « Années »
+
+Chaque catalogue classique dispose d'une vue supplémentaire « Années ». Le manifeste déclare ainsi **16 catalogues au total** (8 classiques + 8 par année) :
+
+```txt
+Kast Movies - Années
+Kast Cartoons - Années
+Kast Series - Années
+Kast Cartoon Series - Années
+Kast Documentaires - Années
+Kast Docu Series - Années
+Kast Spectacles - Années
+Kast Concerts - Années
+```
+
+Le contenu affiché dépend des médias présents dans l'index distant.
+
+### Filtrer par genre
+
+Dans **Stremio → Découvrir**, sélectionne **Films** ou **Séries**, puis un catalogue classique (par exemple **Kast Movies** ou **Kast Series**).
+
+Le sélecteur de genre propose notamment **Action**, **Comédie**, **Drame**, **Horreur**, **Mystère** et **Thriller**. Le filtre utilise les identifiants de genres TMDb présents dans la colonne `GENRES` des sources. La recherche et la pagination restent disponibles dans les catalogues classiques.
+
+### Filtrer par année
+
+Dans **Stremio → Découvrir**, choisis **Films** ou **Séries**, puis le catalogue **Kast Movies - Années**, **Kast Series - Années** ou une autre vue « Années ».
+
+Sélectionne une année dans le menu proposé : en **2026**, les 28 choix vont de **2000 à 2027** (la plage glisse automatiquement avec l'année courante). Les résultats sont filtrés sur la colonne `YEAR`, avant pagination.
+
+**À noter :** dans certaines versions de Stremio, le menu des années reste intitulé **« Genre »**, car les vues « Années » réutilisent le sélecteur natif de catalogue. Le filtrage **Genre** et le filtrage **Année** utilisent donc des **catalogues distincts** : ils ne sont pas combinés dans un seul sélecteur.
+
+### Mettre à jour l'addon dans Stremio
+
+Après une modification des catalogues ou des filtres dans le manifeste, il peut être nécessaire de **désinstaller puis réinstaller** Kast Alldebrid depuis **Addons → Mes addons**, en utilisant **la même URL personnelle de manifeste** qu'auparavant. Cette opération ne supprime pas la configuration du serveur.
+
+Ne partage jamais cette URL personnelle : elle contient ta configuration chiffrée.
+
 ---
 
 ## Clé API AllDebrid
