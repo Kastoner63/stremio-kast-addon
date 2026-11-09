@@ -16,8 +16,11 @@ function catalog(type, id, name) {
 // Stremio présente les options de 'genre' dans Découvrir ; des catalogues
 // Années distincts utilisent ce sélecteur avec des années, comme Cinemeta.
 function yearOptions() {
+  // Le SDK Stremio limite le manifest à 8 Ko. Garder 28 années par
+  // catalogue évite de dupliquer 128 valeurs dans chacune des huit vues.
+  // En 2026, cela donne 2000–2027 ; les catalogues Genre restent inchangés.
   const lastYear = new Date().getUTCFullYear() + 1;
-  return Array.from({ length: lastYear - 1899 }, (_, index) => String(lastYear - index));
+  return Array.from({ length: 28 }, (_, index) => String(lastYear - index));
 }
 
 function yearCatalog(type, id, name) {
