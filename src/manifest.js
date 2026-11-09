@@ -1,3 +1,5 @@
+const { genreOptions } = require('./genreMap');
+
 function catalog(type, id, name) {
   return {
     type,
@@ -6,6 +8,7 @@ function catalog(type, id, name) {
     extra: [
       { name: 'search', isRequired: false },
       { name: 'skip', isRequired: false },
+      { name: 'genre', isRequired: false, options: genreOptions() },
     ],
   };
 }
