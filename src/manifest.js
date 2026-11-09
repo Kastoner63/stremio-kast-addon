@@ -13,6 +13,28 @@ function catalog(type, id, name) {
   };
 }
 
+// Stremio présente les options de 'genre' dans Découvrir ; des catalogues
+// Années distincts utilisent ce sélecteur avec des années, comme Cinemeta.
+function yearOptions() {
+  // Le SDK Stremio limite le manifest à 8 Ko. Garder 28 années par
+  // catalogue évite de dupliquer 128 valeurs dans chacune des huit vues.
+  // En 2026, cela donne 2000–2027 ; les catalogues Genre restent inchangés.
+  const lastYear = new Date().getUTCFullYear() + 1;
+  return Array.from({ length: 28 }, (_, index) => String(lastYear - index));
+}
+
+function yearCatalog(type, id, name) {
+  return {
+    type,
+    id: `${id}-by-year`,
+    name: `${name} - Années`,
+    extra: [
+      { name: 'genre', isRequired: true, options: yearOptions() },
+      { name: 'skip', isRequired: false },
+    ],
+  };
+}
+
 const baseManifest = {
   id: 'com.kasttech.private.paste.library.public.v1',
   name: 'Kast Alldebrid',
@@ -31,6 +53,16 @@ const baseManifest = {
     catalog('series', 'kast-series', 'Kast Series'),
     catalog('series', 'kast-cartoon-series', 'Kast Cartoon Series'),
     catalog('series', 'kast-documentary-series', 'Kast Docu Series'),
+
+    // Vues Années séparées : les 8 catalogues Genre restent inchangés.
+    yearCatalog('movie', 'kast-movies', 'Kast Movies'),
+    yearCatalog('movie', 'kast-cartoons', 'Kast Cartoons'),
+    yearCatalog('movie', 'kast-documentaries', 'Kast Documentaires'),
+    yearCatalog('movie', 'kast-spectacles', 'Kast Spectacles'),
+    yearCatalog('movie', 'kast-concerts', 'Kast Concerts'),
+    yearCatalog('series', 'kast-series', 'Kast Series'),
+    yearCatalog('series', 'kast-cartoon-series', 'Kast Cartoon Series'),
+    yearCatalog('series', 'kast-documentary-series', 'Kast Docu Series'),
   ],
 
   resources: [
